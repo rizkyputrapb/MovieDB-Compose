@@ -3,10 +3,17 @@ package com.example.moviedb.presentation.detail
 import android.os.Build
 import androidx.annotation.RequiresExtension
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -14,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -30,10 +38,12 @@ fun MovieDetailPage(
     viewModel: MovieDetailViewModel = hiltViewModel()
 ) {
     val movieDetailState = viewModel.movieDetailState.value
+    val movieVideoState = viewModel.movieVideoState.value
     val movie = sharedViewModel.movie
 
     LaunchedEffect(Unit) {
         viewModel.getMoviesByGenre(movie?.id.toString())
+        viewModel.getMovieVideo(movie?.id.toString())
     }
     BaseScaffold(
         title = sharedViewModel.movie?.title ?: "MovieDB",
@@ -44,13 +54,42 @@ fun MovieDetailPage(
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
+            if (movieVideoState.video?.key != null) item {
+                YoutubeScreen(
+                    videoId = movieVideoState.video.key,
+                    modifier = Modifier.fillParentMaxWidth()
+                )
+            }
             item {
-                YoutubeScreen(videoId = "aLAKJu9aJys", modifier = Modifier.fillParentMaxWidth())
+                LazyRow() {
+                    movieDetailState.movies?.genres.apply {
+                        items(this ?: emptyList()) { genre ->
+                            OutlinedCard(
+                                Modifier.padding(start = 8.dp, top = 8.dp, bottom = 8.dp),
+                                colors = CardDefaults.cardColors(
+                                    contentColor = MaterialTheme.colorScheme.primary,
+                                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                                )
+                            ) {
+                                Text(
+                                    modifier = Modifier.padding(
+                                        vertical = 4.dp,
+                                        horizontal = 8.dp
+                                    ),
+                                    text = genre.name!!,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 14.sp,
+                                )
+                            }
+                        }
+                    }
+                }
             }
             item {
                 Column(
                     Modifier
                         .fillParentMaxWidth()
+                        .padding(all = 8.dp)
                 ) {
                     Text(
                         modifier = Modifier
@@ -69,6 +108,7 @@ fun MovieDetailPage(
                         fontStyle = FontStyle.Italic,
                         textAlign = TextAlign.Start,
                     )
+                    Spacer(modifier = Modifier.height(8.dp))
                     if (movieDetailState.movies?.overview != null) Text(
                         modifier = Modifier
                             .fillMaxWidth(),

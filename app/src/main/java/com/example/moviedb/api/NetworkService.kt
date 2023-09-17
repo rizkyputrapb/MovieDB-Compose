@@ -3,6 +3,7 @@ package com.example.moviedb.api
 import com.example.moviedb.domain.model.movie_detail.MovieDetail
 import com.example.moviedb.domain.model.responses.GenreMoviesResponse
 import com.example.moviedb.domain.model.responses.GenreResponse
+import com.example.moviedb.domain.model.responses.MovieVideoResponse
 import com.example.moviedb.domain.model.responses.PopularMovieResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -26,4 +27,7 @@ interface NetworkService {
 
     @GET("movie/{movie_id}")
     suspend fun getMovieDetail(@Path("movie_id") movieId : String) : MovieDetail
+
+    @GET("movie/{movie_id}/videos")
+    suspend fun getMovieVideos(@Path("movie_id") movieId : String) : MovieVideoResponse
 }
