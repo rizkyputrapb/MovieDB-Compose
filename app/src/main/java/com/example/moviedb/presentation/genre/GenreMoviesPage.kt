@@ -43,7 +43,7 @@ import com.example.moviedb.presentation.shared_viewmodel.HomeGenreViewModel
 fun GenreMoviesPage(
     navController: NavController,
     homeGenreViewModel: HomeGenreViewModel,
-    viewModel: GenreViewModel = hiltViewModel<GenreViewModel>(),
+    viewModel: GenreViewModel = hiltViewModel(),
     movieSharedViewModel: DetailSharedViewModel,
 ) {
     val movieState = viewModel.moviesState.value

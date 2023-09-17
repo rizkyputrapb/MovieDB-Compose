@@ -5,7 +5,7 @@ import android.os.Build
 import androidx.annotation.RequiresExtension
 import com.example.moviedb.common.Resource
 import com.example.moviedb.domain.repository.Repository
-import com.example.moviedb.domain.model.PopularMovieResponse
+import com.example.moviedb.domain.model.responses.PopularMovieResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import okio.IOException

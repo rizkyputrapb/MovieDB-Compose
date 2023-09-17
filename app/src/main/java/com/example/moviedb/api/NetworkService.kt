@@ -1,9 +1,11 @@
 package com.example.moviedb.api
 
-import com.example.moviedb.domain.model.GenreMoviesResponse
-import com.example.moviedb.domain.model.GenreResponse
-import com.example.moviedb.domain.model.PopularMovieResponse
+import com.example.moviedb.domain.model.movie_detail.MovieDetail
+import com.example.moviedb.domain.model.responses.GenreMoviesResponse
+import com.example.moviedb.domain.model.responses.GenreResponse
+import com.example.moviedb.domain.model.responses.PopularMovieResponse
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface NetworkService {
@@ -22,5 +24,6 @@ interface NetworkService {
         @Query("sort_by") sortBy: String = "popularity.desc"
     ) : GenreMoviesResponse
 
-
+    @GET("movie/{movie_id}")
+    suspend fun getMovieDetail(@Path("movie_id") movieId : String) : MovieDetail
 }

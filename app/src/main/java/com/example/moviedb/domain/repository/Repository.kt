@@ -1,9 +1,10 @@
 package com.example.moviedb.domain.repository
 
 import com.example.moviedb.api.NetworkService
-import com.example.moviedb.domain.model.GenreMoviesResponse
-import com.example.moviedb.domain.model.GenreResponse
-import com.example.moviedb.domain.model.PopularMovieResponse
+import com.example.moviedb.domain.model.responses.GenreMoviesResponse
+import com.example.moviedb.domain.model.responses.GenreResponse
+import com.example.moviedb.domain.model.movie_detail.MovieDetail
+import com.example.moviedb.domain.model.responses.PopularMovieResponse
 import javax.inject.Inject
 
 interface Repository {
@@ -11,6 +12,7 @@ interface Repository {
     suspend fun getPopularMovies(): PopularMovieResponse
     suspend fun getGenres(): GenreResponse
     suspend fun getMoviesByGenre(genre: String): GenreMoviesResponse
+    suspend fun getMovieDetail(movieId: String): MovieDetail
 }
 
 class RepositoryImpl @Inject constructor(private val networkService: NetworkService) : Repository {
@@ -24,5 +26,9 @@ class RepositoryImpl @Inject constructor(private val networkService: NetworkServ
 
     override suspend fun getMoviesByGenre(genre: String): GenreMoviesResponse {
         return networkService.getMovieByGenre(genre = genre)
+    }
+
+    override suspend fun getMovieDetail(movieId: String): MovieDetail {
+        return networkService.getMovieDetail(movieId = movieId)
     }
 }

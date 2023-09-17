@@ -4,7 +4,7 @@ import android.net.http.HttpException
 import android.os.Build
 import androidx.annotation.RequiresExtension
 import com.example.moviedb.common.Resource
-import com.example.moviedb.domain.model.GenreMoviesResponse
+import com.example.moviedb.domain.model.responses.GenreMoviesResponse
 import com.example.moviedb.domain.repository.Repository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

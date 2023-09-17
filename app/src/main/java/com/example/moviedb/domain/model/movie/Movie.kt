@@ -1,4 +1,4 @@
-package com.example.moviedb.domain.model
+package com.example.moviedb.domain.model.movie
 
 data class Movie(
     val adult: Boolean,

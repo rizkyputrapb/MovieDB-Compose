@@ -1,4 +1,4 @@
-package com.example.moviedb.domain.model
+package com.example.moviedb.domain.model.genre
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

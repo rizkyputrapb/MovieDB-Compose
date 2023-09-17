@@ -21,6 +21,7 @@ fun YoutubeScreen(
                 override fun onReady(youTubePlayer: YouTubePlayer) {
                     super.onReady(youTubePlayer)
                     youTubePlayer.loadVideo(videoId, 0f)
+                    youTubePlayer.pause()
                 }
             }
         )

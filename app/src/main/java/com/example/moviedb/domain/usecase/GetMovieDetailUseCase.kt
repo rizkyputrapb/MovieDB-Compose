@@ -4,20 +4,20 @@ import android.net.http.HttpException
 import android.os.Build
 import androidx.annotation.RequiresExtension
 import com.example.moviedb.common.Resource
-import com.example.moviedb.domain.model.responses.GenreResponse
+import com.example.moviedb.domain.model.movie_detail.MovieDetail
 import com.example.moviedb.domain.repository.Repository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import java.io.IOException
 import javax.inject.Inject
 
-class GetGenresUseCase @Inject constructor(
-    private val repository: Repository
-) {
+class GetMovieDetailUseCase@Inject constructor(
+    private val repository: Repository,
+)  {
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
-    operator fun invoke(): Flow<Resource<GenreResponse>> = flow {
+    operator fun invoke(movieId: String): Flow<Resource<MovieDetail>> = flow {
         try {
-            val response = repository.getGenres()
+            val response = repository.getMovieDetail(movieId)
             emit(Resource.Success(response))
         } catch (e: HttpException) {
             emit(Resource.Error(e.localizedMessage ?: "An unexpected error occured"))
