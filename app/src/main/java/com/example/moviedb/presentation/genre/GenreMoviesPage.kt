@@ -50,7 +50,7 @@ fun GenreMoviesPage(
     val genre = homeGenreViewModel.genre
 
     LaunchedEffect(Unit) {
-        viewModel.getMoviesByGenre(genreId = genre?.id.toString())
+        viewModel.getMoviesByGenre(genreId = genre?.id.toString(), page = null)
     }
 
     BaseScaffold(title = genre?.name ?: "MovieDB", navController = navController) { innerPadding ->

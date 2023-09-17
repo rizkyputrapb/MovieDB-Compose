@@ -24,8 +24,8 @@ class GenreViewModel @Inject constructor(
     val moviesState: State<GenreMoviesState> = _moviesState
 
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
-    fun getMoviesByGenre(genreId:String) {
-        getMovieByGenreUseCase(genreId).onEach {
+    fun getMoviesByGenre(genreId: String, page: Int?) {
+        getMovieByGenreUseCase(genreId, page).onEach {
             when (it) {
                 is Resource.Success -> {
                     _moviesState.value =

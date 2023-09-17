@@ -11,7 +11,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
@@ -39,11 +41,13 @@ fun MovieDetailPage(
 ) {
     val movieDetailState = viewModel.movieDetailState.value
     val movieVideoState = viewModel.movieVideoState.value
+    val movieReviewState = viewModel.movieReviewState.value
     val movie = sharedViewModel.movie
 
     LaunchedEffect(Unit) {
         viewModel.getMoviesByGenre(movie?.id.toString())
         viewModel.getMovieVideo(movie?.id.toString())
+        viewModel.getMovieReviews(movie?.id.toString(), page = null)
     }
     BaseScaffold(
         title = sharedViewModel.movie?.title ?: "MovieDB",
@@ -118,6 +122,39 @@ fun MovieDetailPage(
                         lineHeight = 14.sp,
                         textAlign = TextAlign.Start,
                     )
+                }
+            }
+            if (movieReviewState.reviews != null) movieReviewState.reviews.apply {
+                items(this) { review ->
+                    Card(
+                        Modifier
+                            .fillParentMaxWidth()
+                            .padding(all = 8.dp), colors = CardDefaults.cardColors(
+                            contentColor = MaterialTheme.colorScheme.primaryContainer,
+                            containerColor = MaterialTheme.colorScheme.primary,
+                        )
+                    ) {
+                        Column(Modifier.padding(8.dp)) {
+                            Text(
+                                text = review.author,
+                                fontSize = 24.sp,
+                                fontWeight = FontWeight.SemiBold
+                            )
+                            Text(
+                                text = review.author_details.username,
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Normal
+                            )
+                            Divider(
+                                Modifier
+                                    .fillParentMaxWidth()
+                                    .padding(vertical = 8.dp)
+                                    .height(1.5.dp),
+                                color = MaterialTheme.colorScheme.primaryContainer
+                            )
+                            Text(text = review.content, fontSize = 14.sp, lineHeight = 14.sp)
+                        }
+                    }
                 }
             }
         }
