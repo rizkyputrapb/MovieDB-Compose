@@ -3,6 +3,7 @@ package com.example.moviedb.presentation.genre
 import android.os.Build
 import androidx.annotation.RequiresExtension
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,8 +32,10 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import com.example.moviedb.navigation.Routes
 import com.example.moviedb.presentation.application.BaseScaffold
 import com.example.moviedb.presentation.genre.viewmodel.GenreViewModel
+import com.example.moviedb.presentation.shared_viewmodel.DetailSharedViewModel
 import com.example.moviedb.presentation.shared_viewmodel.HomeGenreViewModel
 
 @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
@@ -41,6 +44,7 @@ fun GenreMoviesPage(
     navController: NavController,
     homeGenreViewModel: HomeGenreViewModel,
     viewModel: GenreViewModel = hiltViewModel<GenreViewModel>(),
+    movieSharedViewModel: DetailSharedViewModel,
 ) {
     val movieState = viewModel.moviesState.value
     val genre = homeGenreViewModel.genre
@@ -59,7 +63,11 @@ fun GenreMoviesPage(
                     Card(
                         Modifier
                             .height(270.dp)
-                            .padding(all = 4.dp),
+                            .padding(all = 4.dp)
+                            .clickable {
+                                movieSharedViewModel.addMovie(movie)
+                                navController.navigate(Routes.MovieDetailPage.route)
+                            },
                         colors = CardDefaults.cardColors(
                             contentColor = MaterialTheme.colorScheme.primary
                         )

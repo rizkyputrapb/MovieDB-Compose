@@ -21,4 +21,6 @@ interface NetworkService {
         @Query("language") language: String = "en-US",
         @Query("sort_by") sortBy: String = "popularity.desc"
     ) : GenreMoviesResponse
+
+
 }
