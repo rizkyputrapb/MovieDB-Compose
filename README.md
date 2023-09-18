@@ -12,9 +12,9 @@ https://github.com/rizkyputrapb/MovieDB-Compose/assets/43906521/c8933298-70b0-43
 - View Movie Reviews
 
 ## Tech Stack
-- [Jetpack Compose]("https://developer.android.com/jetpack/compose?gclid=Cj0KCQjwx5qoBhDyARIsAPbMagBDjqw1R1vpYbvGuiXONMQrp6pvHUyd7uIzPyN2dx1vCYJISZOPzs8aAlwgEALw_wcB&gclsrc=aw.ds")
-- [MVVM]("https://developer.android.com/topic/libraries/architecture/viewmodel")
-- [Hilt]("https://dagger.dev/hilt/")
-- [Retrofit2]("https://square.github.io/retrofit/")
-- [Coil AsyncImage]("https://coil-kt.github.io/coil/compose/")
+- [Jetpack Compose](https://developer.android.com/jetpack/compose?gclid=Cj0KCQjwx5qoBhDyARIsAPbMagBDjqw1R1vpYbvGuiXONMQrp6pvHUyd7uIzPyN2dx1vCYJISZOPzs8aAlwgEALw_wcB&gclsrc=aw.ds)
+- [MVVM](https://developer.android.com/topic/libraries/architecture/viewmodel)
+- [Hilt](https://dagger.dev/hilt/)
+- [Retrofit2](https://square.github.io/retrofit/)
+- [Coil AsyncImage](https://coil-kt.github.io/coil/compose/)
 
