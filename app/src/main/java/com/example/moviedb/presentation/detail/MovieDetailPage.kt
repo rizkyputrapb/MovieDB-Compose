@@ -43,11 +43,12 @@ fun MovieDetailPage(
     val movieVideoState = viewModel.movieVideoState.value
     val movieReviewState = viewModel.movieReviewState.value
     val movie = sharedViewModel.movie
+    val reviews = viewModel.reviews.toList()
 
     LaunchedEffect(Unit) {
         viewModel.getMoviesByGenre(movie?.id.toString())
         viewModel.getMovieVideo(movie?.id.toString())
-        viewModel.getMovieReviews(movie?.id.toString(), page = null)
+        viewModel.getMovieReviews(movie?.id.toString())
     }
     BaseScaffold(
         title = sharedViewModel.movie?.title ?: "MovieDB",
@@ -124,36 +125,40 @@ fun MovieDetailPage(
                     )
                 }
             }
-            if (movieReviewState.reviews != null) movieReviewState.reviews.apply {
-                items(this) { review ->
-                    Card(
-                        Modifier
-                            .fillParentMaxWidth()
-                            .padding(all = 8.dp), colors = CardDefaults.cardColors(
-                            contentColor = MaterialTheme.colorScheme.primaryContainer,
-                            containerColor = MaterialTheme.colorScheme.primary,
+            items(reviews.size) { idx ->
+                val review = reviews[idx]
+                if (idx >= reviews.size - 1) {
+                    LaunchedEffect(Unit) {
+                        viewModel.getMovieReviews(movieId = movie?.id.toString())
+                    }
+                }
+                Card(
+                    Modifier
+                        .fillParentMaxWidth()
+                        .padding(all = 8.dp), colors = CardDefaults.cardColors(
+                        contentColor = MaterialTheme.colorScheme.primaryContainer,
+                        containerColor = MaterialTheme.colorScheme.primary,
+                    )
+                ) {
+                    Column(Modifier.padding(8.dp)) {
+                        Text(
+                            text = review.author,
+                            fontSize = 24.sp,
+                            fontWeight = FontWeight.SemiBold
                         )
-                    ) {
-                        Column(Modifier.padding(8.dp)) {
-                            Text(
-                                text = review.author,
-                                fontSize = 24.sp,
-                                fontWeight = FontWeight.SemiBold
-                            )
-                            Text(
-                                text = review.author_details.username,
-                                fontSize = 18.sp,
-                                fontWeight = FontWeight.Normal
-                            )
-                            Divider(
-                                Modifier
-                                    .fillParentMaxWidth()
-                                    .padding(vertical = 8.dp)
-                                    .height(1.5.dp),
-                                color = MaterialTheme.colorScheme.primaryContainer
-                            )
-                            Text(text = review.content, fontSize = 14.sp, lineHeight = 14.sp)
-                        }
+                        Text(
+                            text = review.author_details.username,
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Normal
+                        )
+                        Divider(
+                            Modifier
+                                .fillParentMaxWidth()
+                                .padding(vertical = 8.dp)
+                                .height(1.5.dp),
+                            color = MaterialTheme.colorScheme.primaryContainer
+                        )
+                        Text(text = review.content, fontSize = 14.sp, lineHeight = 14.sp)
                     }
                 }
             }

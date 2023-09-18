@@ -4,7 +4,12 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresExtension
 import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.moviedb.common.Resource
@@ -33,6 +38,10 @@ class MovieDetailViewModel @Inject constructor(
 
     private val _movieReviewState = mutableStateOf(MovieReviewState())
     val movieReviewState: State<MovieReviewState> = _movieReviewState
+
+    val reviews: SnapshotStateList<Review> = mutableStateListOf()
+    private var currentPage by mutableIntStateOf(1)
+    private var totalPages by mutableIntStateOf(1)
 
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
     fun getMoviesByGenre(movieId: String) {
@@ -71,21 +80,26 @@ class MovieDetailViewModel @Inject constructor(
     }
 
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
-    fun getMovieReviews(movieId: String, page: Int?) {
-        getMovieReviewsUseCase(movieId, page).onEach {
-            when (it) {
-                is Resource.Success -> {
-                    _movieReviewState.value =
-                        MovieReviewState(reviews = it.data?.results)
-                }
+    fun getMovieReviews(movieId: String) {
+        if (currentPage <= totalPages) {
+            getMovieReviewsUseCase(movieId, currentPage).onEach {
+                when (it) {
+                    is Resource.Success -> {
+                        totalPages = it.data?.total_pages ?: 0
+                        reviews.addAll(it.data?.results ?: emptyList())
+                        _movieReviewState.value =
+                            MovieReviewState(reviews = reviews)
+                        currentPage += 1
+                    }
 
-                is Resource.Error -> {
-                    Log.e("NetworkError", it.message ?: "An unexpected error occurred")
-                    _movieReviewState.value =
-                        MovieReviewState(error = it.message ?: "An unexpected error occurred")
+                    is Resource.Error -> {
+                        Log.e("NetworkError", it.message ?: "An unexpected error occurred")
+                        _movieReviewState.value =
+                            MovieReviewState(error = it.message ?: "An unexpected error occurred")
+                    }
                 }
-            }
-        }.launchIn(viewModelScope)
+            }.launchIn(viewModelScope)
+        }
     }
 }
 

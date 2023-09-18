@@ -10,7 +10,6 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.moviedb.common.Resource
@@ -24,7 +23,6 @@ import javax.inject.Inject
 @HiltViewModel
 class GenreViewModel @Inject constructor(
     private val getMovieByGenreUseCase: GetMovieByGenreUseCase,
-    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private val _moviesState = mutableStateOf(GenreMoviesState())
     val moviesState: State<GenreMoviesState> = _moviesState
