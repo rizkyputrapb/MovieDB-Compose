@@ -8,6 +8,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.moviedb.common.Resource
+import com.example.moviedb.domain.model.movie_detail.MovieDetail
+import com.example.moviedb.domain.model.review.Review
+import com.example.moviedb.domain.model.video.MovieVideo
 import com.example.moviedb.domain.usecase.GetMovieDetailUseCase
 import com.example.moviedb.domain.usecase.GetMovieReviewsUseCase
 import com.example.moviedb.domain.usecase.GetMovieVideoUseCase
@@ -85,3 +88,18 @@ class MovieDetailViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 }
+
+data class MovieDetailState(
+    val movies: MovieDetail? = null,
+    val error: String = ""
+)
+
+data class MovieReviewState(
+    val reviews: List<Review>? = emptyList(),
+    val error: String = ""
+)
+
+data class MovieVideoState(
+    val video: MovieVideo? = null,
+    val error: String = ""
+)

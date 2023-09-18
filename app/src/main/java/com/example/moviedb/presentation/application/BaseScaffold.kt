@@ -1,6 +1,7 @@
 package com.example.moviedb.presentation.application
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -13,8 +14,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -44,10 +47,11 @@ fun BaseScaffold(
                 navigationIcon = {
                     if (navController.previousBackStackEntry != null) {
                         run {
-                            IconButton(onClick = { navController.navigateUp() }) {
+                            IconButton(modifier = Modifier.padding(8.dp),onClick = { navController.navigateUp() }) {
                                 Icon(
+                                    tint = MaterialTheme.colorScheme.surfaceTint,
                                     imageVector = Icons.Filled.ArrowBack,
-                                    contentDescription = "Back"
+                                    contentDescription = "Back",
                                 )
                             }
                         }

@@ -8,6 +8,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.moviedb.common.Resource
+import com.example.moviedb.domain.model.genre.Genre
+import com.example.moviedb.domain.model.movie.Movie
 import com.example.moviedb.domain.usecase.GetGenresUseCase
 import com.example.moviedb.domain.usecase.GetPopularMoviesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -68,3 +70,13 @@ class HomeViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 }
+
+data class GenresState(
+    val genres: List<Genre> = emptyList(),
+    val error: String = ""
+)
+
+data class PopularMoviesState(
+    val popularMovies: List<Movie> = emptyList(),
+    val error : String = ""
+)

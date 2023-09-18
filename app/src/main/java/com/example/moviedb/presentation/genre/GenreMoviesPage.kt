@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -47,10 +46,11 @@ fun GenreMoviesPage(
     movieSharedViewModel: DetailSharedViewModel,
 ) {
     val movieState = viewModel.moviesState.value
+    val movies = viewModel.movies.toList()
     val genre = homeGenreViewModel.genre
 
     LaunchedEffect(Unit) {
-        viewModel.getMoviesByGenre(genreId = genre?.id.toString(), page = null)
+        viewModel.getMoviesByGenre(genreId = genre?.id.toString())
     }
 
     BaseScaffold(title = genre?.name ?: "MovieDB", navController = navController) { innerPadding ->
@@ -58,56 +58,60 @@ fun GenreMoviesPage(
             contentPadding = innerPadding,
             columns = GridCells.Fixed(count = 2),
         ) {
-            movieState.movies.apply {
-                items(this) { movie ->
-                    Card(
-                        Modifier
-                            .height(270.dp)
-                            .padding(all = 4.dp)
-                            .clickable {
-                                movieSharedViewModel.addMovie(movie)
-                                navController.navigate(Routes.MovieDetailPage.route)
-                            },
-                        colors = CardDefaults.cardColors(
-                            contentColor = MaterialTheme.colorScheme.primary
-                        )
+            items(movies.size) { idx ->
+                val movie = movies[idx]
+                if(idx >= movies.size - 1) {
+                    LaunchedEffect(Unit) {
+                        viewModel.getMoviesByGenre(genreId = genre?.id.toString())
+                    }
+                }
+                Card(
+                    Modifier
+                        .height(270.dp)
+                        .padding(all = 4.dp)
+                        .clickable {
+                            movieSharedViewModel.addMovie(movie)
+                            navController.navigate(Routes.MovieDetailPage.route)
+                        },
+                    colors = CardDefaults.cardColors(
+                        contentColor = MaterialTheme.colorScheme.primary
+                    )
+                ) {
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Column(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally
+                        Box(
+                            Modifier.fillMaxSize()
                         ) {
+                            AsyncImage(
+                                "https://image.tmdb.org/t/p/original${movie.poster_path}",
+                                modifier = Modifier.fillMaxSize(),
+                                contentDescription = "Movie Backdrop",
+                                contentScale = ContentScale.FillBounds
+                            )
                             Box(
-                                Modifier.fillMaxSize()
-                            ) {
-                                AsyncImage(
-                                    "https://image.tmdb.org/t/p/original${movie.poster_path}",
-                                    modifier = Modifier.fillMaxSize(),
-                                    contentDescription = "Movie Backdrop",
-                                    contentScale = ContentScale.FillBounds
-                                )
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxSize()
-                                        .background(
-                                            Brush.verticalGradient(
-                                                listOf(Color.Transparent, Color.Black),
-                                                0f,
-                                                1000f,
-                                            )
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .background(
+                                        Brush.verticalGradient(
+                                            listOf(Color.Transparent, Color.Black),
+                                            0f,
+                                            1000f,
                                         )
-                                )
-                                Text(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(all = 8.dp)
-                                        .align(Alignment.BottomCenter),
-                                    text = movie.title,
-                                    fontSize = 18.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    textAlign = TextAlign.Center,
-                                )
-                            }
+                                    )
+                            )
+                            Text(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(all = 8.dp)
+                                    .align(Alignment.BottomCenter),
+                                text = movie.title,
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Bold,
+                                textAlign = TextAlign.Center,
+                            )
                         }
                     }
                 }
